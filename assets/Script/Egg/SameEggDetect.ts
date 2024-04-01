@@ -41,9 +41,6 @@ export default class SameEggDetect extends cc.Component {
       if (otherEgg.isCheck == false) {
         this.sameEggNear.push(other.node.parent.getComponent(Egg));
         other.node.parent.getChildByName("HightLight").active = true;
-
-        console.log("Collision Active");
-        console.log("add next node");
         GameManager.Instance.AddToList(other.node.parent);
       }
     } else if (

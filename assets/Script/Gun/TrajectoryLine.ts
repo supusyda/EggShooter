@@ -41,16 +41,29 @@ export default class TrajectoryLine extends cc.Component {
     );
     this.graphics.clear();
     this.graphics.lineWidth = 10; // Set line width
-    this.graphics.moveTo(0, 0);
-    // Draw a line to the end point
-    let gunDir = dir.clone();
-    gunDir.mulSelf(1000);
-    this.graphics.lineTo(gunDir.x, gunDir.y);
+    // console.log("startPoint", startPoint.x, startPoint.y);
+
     const result: cc.PhysicsRayCastResult[] = cc.director
       .getPhysicsManager()
       .rayCast(startPoint, endPoint, cc.RayCastType.All);
     if (result[0] != null && result[0].collider.node.group == "Wall") {
-      this.CalculateAngle(result[0], dir);
+      this.graphics.moveTo(0, 0);
+      let gunDir = dir.clone();
+      gunDir.mulSelf(1000);
+      let magOfLine = this.node.parent
+        .convertToNodeSpaceAR(result[0].point)
+        .sub(this.node.getPosition())
+        .mag();
+      gunDir.normalizeSelf().mulSelf(magOfLine);
+      this.graphics.lineTo(gunDir.x, gunDir.y);
+      this.CalculateAngle(result[0], dir.clone());
+    } else {
+      this.graphics.moveTo(0, 0);
+      // Draw a line to the end point
+      // let distantToWall =
+      let gunDir = dir.clone();
+      gunDir.mulSelf(1000);
+      this.graphics.lineTo(gunDir.x, gunDir.y);
     }
     this.graphics.strokeColor = cc.Color.ORANGE; // Set line color
 
@@ -58,14 +71,51 @@ export default class TrajectoryLine extends cc.Component {
   }
 
   protected CalculateAngle(hit: cc.PhysicsRayCastResult, dir: cc.Vec2) {
-    // dir.x = dir.x * -1;
-
     let newnodePos = this.node.convertToNodeSpaceAR(hit.point);
-    
     dir.x = dir.x * -1;
-
-    // dir.rotateSelf(Math.PI / 3);
+    dir.normalizeSelf();
+    let temp = dir.clone();
     this.drawLine(newnodePos, dir);
+
+    temp.mulSelf(1000).addSelf(hit.point);
+    let result: cc.PhysicsRayCastResult[] = cc.director
+      .getPhysicsManager()
+      .rayCast(hit.point, temp, cc.RayCastType.Closest);
+    // result.forEach((res) => {
+    //   if (res?.collider.node.group == "Wall") {
+    //     let newnodePos2 = this.node.convertToNodeSpaceAR(res.point);
+    //     let newDir = dir.clone();
+    //     newDir.x = newDir.x * -1;
+    //     this.drawLine(newnodePos2, newDir);
+    //   }
+    // });
+    let i = 0;
+    while (
+      result.length > 0 &&
+      result[0].collider.node.group == "Wall" &&
+      i <= 5
+    ) {
+      result.forEach((res) => {
+        if (res?.collider.node.group == "Wall") {
+          i++;
+          let newnodePos2 = this.node.convertToNodeSpaceAR(res.point);
+          let newDir = dir;
+          newDir.x = newDir.x * -1;
+          this.drawLine(newnodePos2, newDir);
+          let temp2 = newDir.clone();
+
+          temp2.mulSelf(1000).addSelf(res.point);
+
+          result = cc.director
+            .getPhysicsManager()
+            .rayCast(res.point, temp2, cc.RayCastType.Closest);
+          // console.log(i);
+        }
+      });
+
+      // console.log(result.length);
+      i++;
+    }
   }
   protected update(dt: number): void {
     // this.draw();

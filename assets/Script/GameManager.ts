@@ -9,6 +9,7 @@ import Egg from "./Egg/Egg";
 import SameEggDetect from "./Egg/SameEggDetect";
 import EggSpawnerCtrl from "./EggSpawnCtrl";
 import Gun from "./Gun/Gun";
+import UIManager from "./UI/UIManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -16,8 +17,11 @@ const { ccclass, property } = cc._decorator;
 export default class GameManager extends cc.Component {
   public static Instance: GameManager = null;
   public eggCtrl: EggSpawnerCtrl = null;
-  public list: cc.Node[] = [];
+  @property(cc.Node)
+  public eggHolder: cc.Node = null;
 
+  public list: cc.Node[] = [];
+  public isAlive: boolean = true;
   public mouseX: number = 0;
   public mouseY: number = 0;
 
@@ -25,22 +29,35 @@ export default class GameManager extends cc.Component {
     GameManager.Instance = this;
     cc.director.getCollisionManager().enabled = true;
     cc.director.getPhysicsManager().enabled = true;
-
-    cc.director.getPhysicsManager().debugDrawFlags =
-      cc.PhysicsManager.DrawBits.e_aabbBit |
-      cc.PhysicsManager.DrawBits.e_jointBit |
-      cc.PhysicsManager.DrawBits.e_shapeBit;
-    cc.director.getCollisionManager().enabledDebugDraw = true;
   }
-
+  MoveEggDown() {
+    if (GameManager.Instance.isAlive != true) return;
+    this.eggHolder.children.forEach((child) => {
+      child.setPosition(child.position.x, child.position.y - 0.09);
+      console.log(child.position.x, child.position.y);
+    });
+  }
+  protected start(): void {}
   public setEggSpawnerCtr(eggCtrl) {
     this.eggCtrl = eggCtrl;
-    console.log(this.eggCtrl);
+    // console.log(this.eggCtrl);
 
     if (this.eggCtrl == null) return;
     // this.eggCtrl.EggSpawner.SpawnRandomEgg();
     // this.eggCtrl.EggSpawner.SpawnRandomEgg();
     // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // this.schedule(() => {
+    //   this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    // }, 0.5);
   }
   AddToList(Egg: cc.Node) {
     if (this.list.includes(Egg)) return;
@@ -54,19 +71,13 @@ export default class GameManager extends cc.Component {
 
     for (let index = this.list.length - 1; index >= 0; index--) {
       let element = this.list[index];
-      // console.log("item in list", index);
-      // console.log(this.list);
 
-      // console.log("element", element);
-      // console.log("Root", element.getComponent("Egg").isCheck);
       isDoneFind = element
         .getComponentInChildren(SameEggDetect)
         .CheckSurround();
       if (isDoneFind == false) return;
     }
-    // console.log("isDoneFind", isDoneFind);
-    console.log(this.list);
-
+    // console.log(this.list);
     if (isDoneFind == true) {
       if (this.list[0].getComponent(Egg).rootNode == true) {
         if (this.list.length >= 3) {
@@ -83,9 +94,7 @@ export default class GameManager extends cc.Component {
       console.log(index);
       this.list[index].getComponent(Egg).DestroySelf();
     }
-
     this.list.length = 0;
-    // console.log("DeleteSameEggList", this.list);
   }
   ClearList() {
     this.list.forEach((egg) => {
@@ -98,6 +107,9 @@ export default class GameManager extends cc.Component {
     });
     this.list.length = 0;
   }
+  protected update(dt: number): void {
+    // this.MoveEggDown();
+  }
   CheckIsDoneFindSameEgg() {
     this.list.forEach((Egg) => {
       if (Egg.getComponentInChildren(SameEggDetect).isSurroundClear == false) {
@@ -108,6 +120,15 @@ export default class GameManager extends cc.Component {
   }
   public DelLastRow() {
     this.DeleteSameEggList();
+  }
+  public Restart() {
+    cc.director.loadScene(cc.director.getScene().name);
+  }
+  public GameOver() {
+    if (this.isAlive == true) {
+      this.isAlive = false;
+      UIManager.Instance.GameOverUI.active = true;
+    }
   }
   public spawn2r() {
     this.eggCtrl.EggSpawner.SpawnRandomEgg();

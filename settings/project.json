@@ -16,6 +16,10 @@
       false,
       false,
       false,
+      true,
+      null,
+      null,
+      null,
       true
     ],
     [
@@ -29,6 +33,9 @@
       true,
       false,
       false,
+      false,
+      null,
+      null,
       false
     ],
     [
@@ -47,6 +54,16 @@
       false,
       false,
       true,
+      false
+    ],
+    [
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
       false
     ]
   ],
@@ -58,7 +75,8 @@
     "SameEggDetect",
     "EggPlace",
     "Wall",
-    "EggPhysic"
+    "EggPhysic",
+    "GameOverDetect"
   ],
   "start-scene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
   "design-resolution-width": 616,
@@ -72,7 +90,7 @@
     "height": 640,
     "width": 960
   },
-  "last-module-event-record-time": 0,
+  "last-module-event-record-time": 1711944295400,
   "assets-sort-type": "name",
   "facebook": {
     "appID": "",

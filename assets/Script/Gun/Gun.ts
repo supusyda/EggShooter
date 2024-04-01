@@ -42,13 +42,15 @@ export default class Gun extends cc.Component {
       let raycast = this.dir.mul(2000);
       raycast = raycast.add(worldPos);
       this.trajectory.draw(raycast, this.dir.clone());
-    }, 0.1);
+    }, 0.01);
   }
   onMouseUp(event: cc.Event.EventMouse) {
+    if (GameManager.Instance.isAlive != true) return;
     this.shoot.ShootThing(this.dir, this.gun.angle);
     this.gun.getComponent(cc.AudioSource).play();
   }
   onMouseMove(event: cc.Event.EventMouse) {
+    if (GameManager.Instance.isAlive != true) return;
     const mousePos = new cc.Vec2(event.getLocationX(), event.getLocationY());
     const nodePos = this.node.convertToNodeSpaceAR(mousePos);
     // Calculate the direction vector from node to mouse position
