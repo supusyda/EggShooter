@@ -16,9 +16,14 @@ export default class MoveWithParent extends cc.Component {
     // this.node.setPosition(this.node.position.x, this.node.position.y - 0.09);
     // console.log(this.node.position.x, this.node.position.y);
     if (GameManager.Instance.isAlive != true) return;
+
     this.node.children.forEach((childNode) => {
-      var tempPos = new cc.Vec2(childNode.position.x, childNode.position.y);
-      childNode.setPosition(tempPos.x, tempPos.y - 0.09);
+      var tempPos = new cc.Vec2(
+        childNode.position.x,
+        childNode.position.y - 0.09
+      );
+      // childNode.setPosition(tempPos.x, tempPos.y - 0.09);
+      childNode.setPosition(tempPos.x, tempPos.y);
     });
   }
 

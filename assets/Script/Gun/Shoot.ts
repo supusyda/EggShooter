@@ -18,30 +18,31 @@ export default class Shoot extends cc.Component {
     this.setUpCurrentBullet();
   }
   ShootThing(dir, angle) {
+    if (GameManager.Instance.isAlowToShoot == false) return;
     let shootedEgg = this.node.parent.getComponent(Gun).currentEgg;
     // shootedEgg.position = nodePos;
     const nodePos = this.node.convertToWorldSpaceAR(
       Gun.Instance.firePoint.position
     );
     shootedEgg.position = EggSpawner.Instance.convertNodeSpace(nodePos);
+    shootedEgg.getChildByName("EggBox").group = "ShootEgg";
+
     shootedEgg.active = true;
     shootedEgg.parent = EggSpawner.Instance.bulletEggHolder;
     shootedEgg.getChildByName("EggPlacement").active = false;
-    shootedEgg.getChildByName("EggBox").group = "ShootEgg";
     shootedEgg.getComponent(Fly).moveSpeed = 1000;
     shootedEgg.getComponent(Fly).dir = dir;
     shootedEgg.getComponent(Fly).shoot();
     shootedEgg.rotation = angle;
     shootedEgg.getComponent(Egg).collider.enabled = true;
     GameManager.Instance.ClearList();
-    console.log("add first node");
-    shootedEgg.getChildByName("HightLight").active = true;
     shootedEgg.getComponent(Egg).isCheck = true;
     shootedEgg.getComponent(Egg).rootNode = true;
+    shootedEgg.getComponent(Egg).justShootNode = true;
 
     // console.log(shootedEgg);
-
     GameManager.Instance.AddToList(shootedEgg);
+
     this.setUpCurrentBullet();
   }
 
@@ -62,7 +63,6 @@ export default class Shoot extends cc.Component {
     // shootedEgg.rotation = angle;
   }
   protected update(dt: number): void {
-
     this.node.parent.getComponent(Gun).holder.children.forEach((element) => {
       element.getComponent(cc.RigidBody).syncPosition(true);
     });
@@ -81,6 +81,8 @@ export default class Shoot extends cc.Component {
         .getComponent(cc.Sprite).spriteFrame;
     // shootedEgg.active = false;
     this.node.parent.getComponent(Gun).currentEgg = shootedEgg;
+    this.node.getChildByName("CurrentEgg").width = 24;
+    this.node.getChildByName("CurrentEgg").height = 24;
 
     // this.node.getChildByName("CurrentEgg")
   }

@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import GameManager from "./GameManager";
 import Spawner from "./Spawner";
 
 const { ccclass, property } = cc._decorator;
@@ -24,7 +25,11 @@ export default class EggSpawner extends Spawner {
   };
   public SpawnRandomEgg() {
     // console.log(this.holder);
-    for (let i = 0; i <= this.rowPrefabs.length - 1; i++) {
+    console.log("CC");
+
+    // console.log("this.rowPrefabs", this.rowPrefabs);
+
+    for (let i = 0; i < 2; i++) {
       let row = cc.instantiate(this.rowPrefabs[i]);
       // todo: instantiate egg
       let numberOffEggToSpawn = 0;
@@ -35,14 +40,13 @@ export default class EggSpawner extends Spawner {
         // row 2 spawn 9 egg
         numberOffEggToSpawn = 9;
       }
-      for (let eggIndex = 0; eggIndex <= numberOffEggToSpawn - 1; eggIndex++) {
+      for (let eggIndex = 0; eggIndex < numberOffEggToSpawn; eggIndex++) {
+        GameManager.Instance.activeBallNumber++;
         let randomEgg = Math.floor(Math.random() * 4);
         let newEgg = cc.instantiate(this.eggPrefabs[randomEgg]);
         newEgg.parent = row;
         newEgg.active = true;
-        // console.log(newEgg.getChildByName("EggBox").group);
-        // console.log(newEgg.getChildByName("SameEggDetect").group);
-        // console.log(newEgg.group);
+        GameManager.Instance.listOfAllBall.push(newEgg);
       }
       row.parent = this.eggSpawnHolder;
       row.active = true;
@@ -63,8 +67,9 @@ export default class EggSpawner extends Spawner {
     if (prefab == null) return null;
     let newNode: cc.Node = cc.instantiate(prefab);
     newNode.active = true;
-    // newNode.position = nodePos;
-    // newNode.parent = this.bulletEggHolder;
+    GameManager.Instance.activeBallNumber++;
+    // console.log("+1");
+
     return newNode;
   }
   convertNodeSpace(pos) {
@@ -108,5 +113,4 @@ export default class EggSpawner extends Spawner {
     this.LoadPrefabs();
     EggSpawner.Instance = this;
   }
-  protected start(): void {}
 }
