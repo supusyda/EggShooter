@@ -162,7 +162,7 @@ export default class GameManager extends cc.Component {
         ).y;
 
         if (ballNeedToTouchY < tempBallY) {
-          this.ballNeedToTouch.getChildByName("HightLight 3").active = false;
+          // this.ballNeedToTouch.getChildByName("HightLight 3").active = false;
           this.ballNeedToTouch = element;
         }
       }
@@ -197,8 +197,8 @@ export default class GameManager extends cc.Component {
       this.listOfEffectedBall.forEach((element) => {
         if (element.children.length <= 0) return;
 
-        element.getChildByName("HightLight").active = false;
-        element.getChildByName("HightLight 2").active = false;
+        // element.getChildByName("HightLight").active = false;
+        // element.getChildByName("HightLight 2").active = false;
         element.getChildByName("TopDetecter").active = false;
         element.getChildByName("RightDetecter").active = false;
         element.getChildByName("LeftDetecter").active = false;
@@ -206,7 +206,7 @@ export default class GameManager extends cc.Component {
     }
     this.listToCheckIsCut.forEach((element) => {
       if (element.children.length > 0) {
-        element.getChildByName("HightLight").active = false;
+        // element.getChildByName("HightLight").active = false;
         element.getComponentInChildren(OtherEggDetect).isCheck = false;
         element.getChildByName("TopDetecter").active = false;
         element.getChildByName("RightDetecter").active = false;
@@ -219,7 +219,7 @@ export default class GameManager extends cc.Component {
       }
     });
     if (this.ballNeedToTouch != null) {
-      this.ballNeedToTouch.getChildByName("HightLight 3").active = false;
+      // this.ballNeedToTouch.getChildByName("HightLight 3").active = false;
       this.ballNeedToTouch = null;
     }
     this.listToCheckIsCut.length = 0;

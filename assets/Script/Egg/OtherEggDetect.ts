@@ -31,7 +31,7 @@ export default class OtherEggDetect extends cc.Component {
       vertex.children.length <= 0
     )
       return;
-    vertex.getChildByName("HightLight").active = true;
+    // vertex.getChildByName("HightLight").active = true;
     this.isCheck = true;
     if (!GameManager.Instance.listToCheckIsCut.includes(this.node.parent))
       GameManager.Instance.listToCheckIsCut.push(this.node.parent);
