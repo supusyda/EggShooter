@@ -48,14 +48,52 @@ export default class Egg extends cc.Component {
       })
       .start();
   }
+  DestroySelfGameOver(time) {
+    this.scheduleOnce(() => {
+      cc.tween(this.node.getChildByName("Model"))
+        // Delay 1s
+        .to(0.7, { scale: 2 })
+        .to(1, { scale: 2.5 })
+        .to(0.2, { scale: 0 })
+
+        .start();
+    }, time);
+  }
+  BallImpact() {
+    cc.tween(this.node.getChildByName("Model"))
+      // Delay 1s
+      .to(
+        0.1,
+        {
+          scale: 0.5,
+        },
+        { easing: "bounceOut" }
+      )
+      .to(
+        0.3,
+        {
+          scale: 1,
+        },
+        { easing: "bounceOut" }
+      )
+
+      .start();
+  }
   Fall() {
+    let ccc = Math.random() * 70 * (Math.random() > 0.5 ? -1 : 1);
+    console.log(ccc);
+
     this.node.group = "default";
     cc.tween(this.node.getChildByName("Model"))
       // Delay 1s
-      .to(0.2, {
-        position: new cc.Vec3(0, -100, 0),
-        scale: 0,
-      })
+      .to(
+        0.6,
+        {
+          position: new cc.Vec3(ccc, Math.random() * -70, 0),
+          scale: 0,
+        },
+        { easing: "fade" }
+      )
       .call(() => {
         this.node.removeAllChildren();
         let index = GameManager.Instance.listOfAllBall.indexOf(this.node);

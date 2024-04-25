@@ -30,7 +30,7 @@ export default class Shoot extends cc.Component {
     shootedEgg.active = true;
     shootedEgg.parent = EggSpawner.Instance.bulletEggHolder;
     shootedEgg.getChildByName("EggPlacement").active = false;
-    shootedEgg.getComponent(Fly).moveSpeed = 1000;
+    shootedEgg.getComponent(Fly).moveSpeed = 1500;
     shootedEgg.getComponent(Fly).dir = dir;
     shootedEgg.getComponent(Fly).shoot();
     shootedEgg.rotation = angle;

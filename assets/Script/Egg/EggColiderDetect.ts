@@ -16,7 +16,7 @@ export default class EggCollider extends cc.Component {
   onCollisionEnter(other: cc.Collider, self: cc.Collider) {
     if (this.node.group == "ShootEgg") {
       console.log(other.node.name);
-
+      this.node.parent.getComponent(Egg).BallImpact();
       this.node.parent.getComponent(Fly).stop();
       this.node.group = "StickEgg";
       this.scheduleOnce(() => {

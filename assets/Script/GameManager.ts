@@ -72,16 +72,17 @@ export default class GameManager extends cc.Component {
       }
     }, 0.1);
   }
-  AddToListOfEffectedBall(Egg: cc.Node) {
-    Egg.getChildByName("TopDetecter").active = true;
-    Egg.getChildByName("RightDetecter").active = true;
-    Egg.getChildByName("LeftDetecter").active = true;
+  AddToListOfEffectedBall(egg: cc.Node) {
+    egg.getChildByName("TopDetecter").active = true;
+    egg.getChildByName("RightDetecter").active = true;
+    egg.getChildByName("LeftDetecter").active = true;
 
-    if (this.listOfEffectedBall.includes(Egg) || this.list.includes(Egg))
+    if (this.listOfEffectedBall.includes(egg) || this.list.includes(egg))
       return;
-    this.listOfEffectedBall.push(Egg);
+    this.listOfEffectedBall.push(egg);
+    // egg.getComponent(Egg).BallImpact();
     this.FindHighBall();
-    Egg.getChildByName("HightLight 2").active = true;
+    egg.getChildByName("HightLight 2").active = true;
   }
   AddToList(Egg: cc.Node) {
     if (this.list.includes(Egg)) return;
@@ -113,7 +114,6 @@ export default class GameManager extends cc.Component {
         element.getChildByName("HightLight").active = false;
         element.getComponentInChildren(OtherEggDetect).isCheck = false;
       } else {
-       
       }
     });
   }
@@ -250,7 +250,14 @@ export default class GameManager extends cc.Component {
     if (this.isAlive == true) {
       this.isAlive = false;
       UIManager.Instance.GameOverUI.active = true;
+      this.AllBallGotPop();
     }
+  }
+  public AllBallGotPop() {
+    this.listOfAllBall.forEach((element) => {
+      let randomTime = Math.random() * 6;
+      element.getComponent(Egg).DestroySelfGameOver(randomTime);
+    });
   }
 
   // update (dt) {}
