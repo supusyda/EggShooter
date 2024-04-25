@@ -1,0 +1,1 @@
+{"paths":{"0":["ShootEffect",0],"1":["fail-144746",0]},"types":["cc.AudioClip"],"uuids":["b9Wq+Elm9JBo+D2xUbW5O1","e3QHZZRqNDxp7d6Q63Af4u"],"scenes":{},"redirect":[0,0,1,0],"deps":["main"],"packs":{},"name":"Sound","importBase":"import","nativeBase":"native","debug":false,"isZip":false,"encrypted":false,"versions":{"import":[],"native":[]}}
