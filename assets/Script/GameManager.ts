@@ -61,16 +61,21 @@ export default class GameManager extends cc.Component {
     if (this.eggCtrl == null) return;
 
     this.eggCtrl.EggSpawner.SpawnRandomEgg();
-    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
-    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
-    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
-    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
-    // this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    this.eggCtrl.EggSpawner.SpawnRandomEgg();
+    this.eggCtrl.EggSpawner.SpawnRandomEgg();
+
     this.schedule(() => {
+      console.log(this.activeBallNumber);
+      console.log(this.listOfAllBall.concat());
+
       if (this.activeBallNumber < 120) {
         this.eggCtrl.EggSpawner.SpawnRandomEgg();
       }
-    }, 0.1);
+    }, 0.5);
   }
   AddToListOfEffectedBall(egg: cc.Node) {
     egg.getChildByName("TopDetecter").active = true;
@@ -82,7 +87,7 @@ export default class GameManager extends cc.Component {
     this.listOfEffectedBall.push(egg);
     // egg.getComponent(Egg).BallImpact();
     this.FindHighBall();
-    egg.getChildByName("HightLight 2").active = true;
+    // egg.getChildByName("HightLight 2").active = true;
   }
   AddToList(Egg: cc.Node) {
     if (this.list.includes(Egg)) return;
@@ -111,7 +116,7 @@ export default class GameManager extends cc.Component {
     });
     this.listToCheckIsCut.forEach((element) => {
       if (element.children.length > 0) {
-        element.getChildByName("HightLight").active = false;
+        // element.getChildByName("HightLight").active = false;
         element.getComponentInChildren(OtherEggDetect).isCheck = false;
       } else {
       }
@@ -168,7 +173,7 @@ export default class GameManager extends cc.Component {
       }
     });
     if (this.ballNeedToTouch == null) return;
-    this.ballNeedToTouch.getChildByName("HightLight 3").active = true;
+    // this.ballNeedToTouch.getChildByName("HightLight 3").active = true;
     // this.listToCheckIsCut.push(this.ballNeedToTouch);
     // this.ballNeedToTouch.getChildByName("OtherEggDetect").active = true;
   }
@@ -179,6 +184,8 @@ export default class GameManager extends cc.Component {
         OtherEggDetect
       ).eggNear.length = 0;
       this.list[index].getComponent(Egg).DestroySelf();
+      let index2 = GameManager.Instance.listOfAllBall.indexOf(this.list[index]);
+      if (index2 > -1) GameManager.Instance.listOfAllBall.splice(index2, 1);
       GameManager.Instance.activeBallNumber--;
       // console.log("-1");
     }
@@ -196,9 +203,6 @@ export default class GameManager extends cc.Component {
     if (this.listOfEffectedBall.length > 0) {
       this.listOfEffectedBall.forEach((element) => {
         if (element.children.length <= 0) return;
-
-        // element.getChildByName("HightLight").active = false;
-        // element.getChildByName("HightLight 2").active = false;
         element.getChildByName("TopDetecter").active = false;
         element.getChildByName("RightDetecter").active = false;
         element.getChildByName("LeftDetecter").active = false;

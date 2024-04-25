@@ -45,6 +45,7 @@ export default class Egg extends cc.Component {
       .to(0.3, { scale: 0 })
       .call(() => {
         this.node.removeAllChildren();
+        
       })
       .start();
   }
